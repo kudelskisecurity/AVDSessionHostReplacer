@@ -79,10 +79,25 @@ function Get-SHRLatestImageVersion {
         }
         elseif ($ImageReference.Id -match $imageVersionResourceIdPattern ) {
             Write-PSFMessage -Level Host -Message 'Image reference is an Image Version resource.'
+
+            $currentSubscriptionId = (Get-AzContext).Subscription.Id
+            $imageSubscriptionId = $Matches.subscription
+            # Switch Subscription if needed
+            if ($imageSubscriptionId -ne $currentSubscriptionId) {
+                Write-PSFMessage -Level Host -Message "Switching to subscription {0}" -StringValues $imageSubscriptionId
+                Set-AzContext -SubscriptionId $imageSubscriptionId
+            }
+
             $imageVersion = Get-AzGalleryImageVersion -ResourceId $ImageReference.Id
             $azImageVersion = $imageVersion.Name
             $azImageDate = $imageVersion.PublishingProfile.PublishedDate
             Write-PSFMessage -Level Host -Message "Image version is {0} and date is {1}" -StringValues $azImageVersion, $azImageDate.ToString('o')
+
+            # Switch back to original subscription
+            if ($imageSubscriptionId -ne $currentSubscriptionId) {
+                Write-PSFMessage -Level Host -Message "Switching back to subscription {0}" -StringValues $currentSubscriptionId
+                Set-AzContext -SubscriptionId $currentSubscriptionId
+            }
         }
         else {
             throw "Image reference Id does not match expected format for an Image Definition resource."
