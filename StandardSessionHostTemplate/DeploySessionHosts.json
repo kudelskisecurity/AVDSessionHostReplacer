@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.32.4.45862",
-      "templateHash": "13792602582245425536"
+      "version": "0.34.44.8038",
+      "templateHash": "18248559684345178319"
     }
   },
   "parameters": {
@@ -141,8 +141,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "9402242463429439832"
+              "version": "0.34.44.8038",
+              "templateHash": "1523521770782911121"
             }
           },
           "parameters": {
@@ -255,8 +255,8 @@
                 "autoUpgradeMinorVersion": true
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'deployIntegrityMonitoring')]",
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'deployIntegrityMonitoring')]"
               ]
             },
             {
@@ -283,8 +283,8 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'deployGPUDriversNvidia')]",
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'deployGPUDriversNvidia')]"
               ]
             },
             {
@@ -301,8 +301,8 @@
                 "settings": "[if(contains(parameters('DomainJoinObject'), 'IntuneJoin'), if(parameters('DomainJoinObject').IntuneJoin, createObject('mdmId', '0000000a-0000-0000-c000-000000000000'), null()), null())]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'JoinHostPool')]",
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'JoinHostPool')]"
               ]
             },
             {
@@ -328,8 +328,8 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'JoinHostPool')]",
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('VMName'))]",
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('VMName'), 'JoinHostPool')]"
               ]
             },
             {
