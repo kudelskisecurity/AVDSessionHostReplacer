@@ -20,7 +20,7 @@ else {
 Write-PSFMessage -Level Host -Message "Using resource group {0} for session hosts" -StringValues $sessionHostResourceGroupName
 
 # Get session hosts and update tags if needed.
-$sessionHosts = Get-SHRSessionHost -FixSessionHostTags:(Get-FunctionConfig _FixSessionHostTags) -ErrorAction SilentlyContinue
+$sessionHosts = Get-SHRSessionHost -FixSessionHostTags:(Get-FunctionConfig _FixSessionHostTags)
 Write-PSFMessage -Level Host -Message "Found {0} session hosts" -StringValues $sessionHosts.Count
 
 # Filter to Session hosts that are included in auto replace
@@ -28,7 +28,7 @@ $sessionHostsFiltered = $sessionHosts | Where-Object { $_.IncludeInAutomation }
 Write-PSFMessage -Level Host -Message "Filtered to {0} session hosts enabled for automatic replacement: {1}" -StringValues $sessionHostsFiltered.Count, ($sessionHostsFiltered.VMName -join ',')
 
 # Get running deployments, if any
-$runningDeployments = Get-SHRRunningDeployment -ResourceGroupName $sessionHostResourceGroupName -ErrorAction SilentlyContinue
+$runningDeployments = Get-SHRRunningDeployment -ResourceGroupName $sessionHostResourceGroupName
 Write-PSFMessage -Level Host -Message "Found {0} running deployments" -StringValues $runningDeployments.Count
 
 # load session host parameters
