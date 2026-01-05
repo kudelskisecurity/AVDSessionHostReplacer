@@ -74,5 +74,5 @@ Compress-Archive -Path .\FunctionApp\* -DestinationPath $folder\FunctionApp.zip 
 
 
 # Create json files for deployment
-bicep build .\StandardSessionHostTemplate\DeploySessionHosts.bicep --outfile .\StandardSessionHostTemplate\DeploySessionHosts.json
-bicep build .\deploy\bicep\DeployAVDSessionHostReplacer.bicep --outfile .\deploy\arm\DeployAVDSessionHostReplacer.json
+bicep build ./StandardSessionHostTemplate/DeploySessionHosts.bicep --outfile ./StandardSessionHostTemplate/DeploySessionHosts.json
+bicep build ./deploy/bicep/DeployAVDSessionHostReplacer.bicep --outfile ./deploy/arm/DeployAVDSessionHostReplacer.json
