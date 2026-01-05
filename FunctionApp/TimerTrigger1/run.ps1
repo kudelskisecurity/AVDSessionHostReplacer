@@ -19,6 +19,30 @@ else {
 }
 Write-PSFMessage -Level Host -Message "Using resource group {0} for session hosts" -StringValues $sessionHostResourceGroupName
 
+##############################################
+# Clean-up any failed deployment #
+##############################################
+$DeploymentPrefix = Get-FunctionConfig _SHRDeploymentPrefix
+$FailedDeployments = Get-AzResourceGroupDeployment -ResourceGroupName $sessionHostResourceGroupName |
+  Where-Object ProvisioningState -eq 'Failed' |
+  ForEach-Object {
+    # VM to remove
+    if ($_.DeploymentName -like 'deploySessionHost-*') {
+      $vmName = $_.DeploymentName -replace '^deploySessionHost-', ''
+      $vm = Get-AzVM -ResourceGroupName $sessionHostResourceGroupName -Name $vmName -ErrorAction SilentlyContinue
+      if ($vm) {
+        Write-PSFMessage -Level Host -Message "Removing VM {0}" -StringValues $vmName
+        Remove-AzVM -ResourceGroupName $sessionHostResourceGroupName -Name $vmName -Force -ErrorAction Continue
+      } else {
+        Write-PSFMessage -Level Host -Message "VM {0} not found, skipping deletion" -StringValues $vmName
+      }
+    }
+
+    Write-Host "Removing failed deployment record: $($_.DeploymentName)"
+    Remove-AzResourceGroupDeployment -ResourceGroupName $sessionHostResourceGroupName -Name $_.DeploymentName
+  }
+##############################################
+
 # Get session hosts and update tags if needed.
 $sessionHosts = Get-SHRSessionHost -FixSessionHostTags:(Get-FunctionConfig _FixSessionHostTags)
 Write-PSFMessage -Level Host -Message "Found {0} session hosts" -StringValues $sessionHosts.Count
