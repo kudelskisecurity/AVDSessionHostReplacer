@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.36.177.2456",
-      "templateHash": "11295269019821143186"
+      "version": "0.39.26.7824",
+      "templateHash": "6129139467148848096"
     }
   },
   "parameters": {
@@ -75,7 +75,7 @@
         "count": "[length(parameters('VMNames'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2025-04-01",
       "name": "[format('deploySessionHost-{0}', parameters('VMNames')[copyIndex()])]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -141,8 +141,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.36.177.2456",
-              "templateHash": "3951627255298418435"
+              "version": "0.39.26.7824",
+              "templateHash": "7201469370236715643"
             }
           },
           "parameters": {
