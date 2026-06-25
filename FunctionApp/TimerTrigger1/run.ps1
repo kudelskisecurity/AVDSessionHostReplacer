@@ -22,7 +22,6 @@ Write-PSFMessage -Level Host -Message "Using resource group {0} for session host
 ##############################################
 # Clean-up any failed deployment #
 ##############################################
-$DeploymentPrefix = Get-FunctionConfig _SHRDeploymentPrefix
 $FailedDeployments = Get-AzResourceGroupDeployment -ResourceGroupName $sessionHostResourceGroupName |
   Where-Object ProvisioningState -eq 'Failed' |
   ForEach-Object {
