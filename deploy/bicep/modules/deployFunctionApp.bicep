@@ -176,7 +176,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
     serverFarmId: appServicePlan.id
     siteConfig: {
       use32BitWorkerProcess: false
-      powerShellVersion: '7.4'
+      powerShellVersion: '7.6'
       appSettings: varFunctionAppSettingsAndReplacementPlanSettings
       ftpsState: 'Disabled'
       cors: {
