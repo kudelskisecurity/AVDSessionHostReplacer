@@ -40,7 +40,19 @@ function Get-SHRSessionHost {
     $result = foreach ($item in $sessionHosts) {
         Write-PSFMessage -Level Host -Message 'Getting VM details for {0}' -StringValues $item.Name
 
-        $vm = Get-AzVM -ResourceId $item.ResourceId | Select-Object Name, TimeCreated,StorageProfile
+        try {
+            $vm = Get-AzVM -ResourceId $item.ResourceId -ErrorAction Stop | Select-Object Name, TimeCreated, StorageProfile
+        }
+        catch {
+            if ($_.Exception.Message -match 'ResourceNotFound') {
+                # Remove the registration only when Azure confirms the backing VM is missing.
+                $staleName = $item.Name -replace ".+\/(.+)", '$1'
+                Write-PSFMessage -Level Warning -Message 'VM {0} for session host {1} was not found. Removing stale session host registration.' -StringValues $item.ResourceId, $staleName
+                Remove-AzWvdSessionHost -ResourceGroupName $ResourceGroupName -HostPoolName $HostPoolName -Name $staleName -Force -ErrorAction Stop | Out-Null
+                continue
+            }
+            throw
+        }
         Write-PSFMessage -Level Host -Message 'VM was created on {0}' -StringValues $vm.TimeCreated
         Write-PSFMessage -Level Host -Message 'VM exact version is {0}' -StringValues $vm.StorageProfile.ImageReference.ExactVersion
 
